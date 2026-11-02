@@ -727,6 +727,8 @@ git push
 
    ![Página do serviço finbot-api no Render com o selo Live e a URL pública da API](imagens/render-servico-live.png)
 
+   > **Não acha "Logs" ou "Environment" no menu da esquerda do serviço?** O Render costuma mostrar um quadro de propaganda (ex.: **"Introducing Workflows"**) no meio desse menu, que **empurra os itens para baixo** e dá a impressão de que o menu só tem *Deploys* e *Settings*. Feche o quadro no **X** (ou role o menu da esquerda) e os outros itens aparecem: **Logs**, **Environment** e os demais. As variáveis de ambiente, como as chaves, ficam em **Environment**, e **não** em *Settings*; dá para editá-las no plano gratuito.
+
    Se o status for **Failed**, abra **Logs** e leia as últimas linhas: costuma ser uma dependência faltando no `requirements.txt` ou uma chave preenchida errada.
 
 8. Abra a URL com `/docs` no final (ex.: `https://finbot-api-xxxx.onrender.com/docs`) e teste `GET /saude` e `POST /chat`, como você fez no computador no Passo 7. A página deve ser igual à do seu computador, agora num endereço público:
@@ -793,6 +795,20 @@ API_URL = "https://finbot-api-XXXX.onrender.com"
 
 ![Lista de traces no Langfuse com a coluna Environment mostrando producao para as conversas do app publicado e default para as anteriores](imagens/langfuse-environment-producao.png)
 
+#### O Streamlit fez um commit no seu repositório
+
+Ao publicar o app, o Streamlit Cloud acrescenta **sozinho** um commit no seu repositório do GitHub, com a mensagem **"Added Dev Container Folder"**. Ele cria a pasta `.devcontainer/`, com um arquivo `devcontainer.json`. Você não fez nada de errado: é uma configuração do **GitHub Codespaces** (um ambiente de programação que roda no navegador) para abrir o app já funcionando. Ela não muda nada no seu projeto local, no Render nem no app publicado.
+
+Como esse commit foi feito direto no GitHub, o seu computador ainda não o tem. **Traga-o agora**, antes de qualquer outro envio:
+
+```bash
+git pull
+```
+
+Depois disso, a pasta `.devcontainer/` aparece no Explorer do VS Code. Pode deixá-la lá.
+
+> Se você pular o `git pull`, o próximo `git push` é recusado com uma mensagem como `! [rejected] main -> main (fetch first)`. Não é grave: rode `git pull` e depois `git push` de novo. Se o VS Code abrir um editor pedindo uma mensagem de *merge*, só salve e feche a aba.
+
 **Teste o ciclo completo:** mude uma regra em `app/prompts/sistema.md`, faça commit e push, aguarde o Render republicar e veja a mudança no app.
 
 ### Passo 14 — Os links do projeto no README
@@ -834,6 +850,7 @@ Salve e envie, criando também a tag desta aula:
 ```bash
 git add README.md
 git commit -m "Aula 2: links do projeto publicado no README"
+git pull
 git push
 git tag aula-2
 git push --tags

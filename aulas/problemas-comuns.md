@@ -39,7 +39,8 @@
 | Mensagem / sintoma | Causa | Solução |
 |---|---|---|
 | "Preciso criar o banco/coleções no Atlas?" | — | **Não.** O banco do `MONGO_BANCO` e as coleções aparecem sozinhos na primeira gravação |
-| `bad auth : authentication failed` | Usuário ou senha errados na URL, ou os `< >` de `<db_password>` ficaram | A senha fica entre `:` e `@`, sem `< >` |
+| `The DNS query name does not exist: _mongodb._tcp.cluster0...` | O endereço do cluster na URL não é o seu: a URL foi montada a partir de um exemplo da aula | Copie a URL **do Atlas** (Connect → Drivers) e troque só `<db_username>` e `<db_password>`. O trecho depois de `cluster0.` tem que ser igual ao do Atlas |
+| `bad auth : authentication failed` | Usuário ou senha errados na URL, os `< >` ficaram, ou foi usado o login do site do Atlas em vez do usuário do banco | A senha fica entre `:` e `@`, sem `< >` |
 | `InvalidURI` | Senha com `@ : / # %`, ou aspas/espaços na URL | Senha só com letras e números; `.env` sem aspas |
 | `ServerSelectionTimeoutError` | IP não liberado ou rede bloqueando | Atlas → Network Access → `0.0.0.0/0`. Na rede da escola, teste no celular roteado |
 | Muitos documentos em `checkpoints` | Normal: o LangGraph salva o estado a **cada passo** | Use `ttl` no checkpointer para limpar conversas antigas |
