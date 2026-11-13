@@ -33,6 +33,12 @@ As aulas apresentam a construção do projeto em etapas:
 6. Arquitetura multiagente.
 7. Simulações, revisão de respostas, avaliações e entrega final.
 
+## Vídeos fazendo as aulas:
+* Aula 1: https://youtu.be/xDYqGrObQdc
+* Aula 2: https://youtu.be/237RED1OSgU
+* Aula 3: https://youtu.be/4SnpPhy6PP8
+* Aula 4: https://youtu.be/gZLjNK-yZS4
+
 Os materiais estão na pasta [`aulas/`](./aulas/).
 
 ## Uso responsável
