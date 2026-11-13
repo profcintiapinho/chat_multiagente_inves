@@ -196,6 +196,14 @@ requests>=2.32  # faz pedidos HTTP às APIs de dados de mercado
 # ↑↑↑ fim do novo ↑↑↑
 ```
 
+Depois de salvar o `requirements.txt`, **instale as bibliotecas novas** (com o `.venv` ativado):
+
+```bash
+pip install -r requirements-dev.txt
+```
+
+O `requirements-dev.txt` inclui o `requirements.txt` (pela linha `-r requirements.txt`), então este comando instala tudo de uma vez. Sem ele, aparece `ModuleNotFoundError` quando o código novo tentar importar a biblioteca. No Render, a instalação é automática a cada deploy.
+
 > ✂️ **Como copiar:** o bloco mostra um trecho do arquivo. Acrescente no seu arquivo só o que está entre `↓↓↓ NOVO` e `↑↑↑ fim do novo ↑↑↑` (ou a linha logo abaixo de `↓ linha nova`). O próprio marcador diz **depois de qual linha** colar: procure essa linha no seu arquivo (`Ctrl+F`). As outras linhas já existem e servem para você achar o lugar. Ao colar, deixe o cursor **no começo da linha** (coluna 1, sem espaços antes), para o VS Code não mudar o recuo.
 
 📄 Arquivo `app/config/settings.py` (trecho alterado na Aula 4):
@@ -246,8 +254,9 @@ BRAPI_TOKEN=SEU_TOKEN_DA_BRAPI
 
    ![Arquivo .env no VS Code com a linha BRAPI_TOKEN preenchida, na seção Dados de mercado](imagens/env-brapi-token.png)
 
-5. Salve (**Ctrl+S**) e, se a API estiver rodando, **reinicie** (`Ctrl+C` e `uvicorn app.main:app --reload` de novo): o `.env` só é lido quando a API sobe.
-6. Teste: `python -m app.tools.mercado` (Passo 3) ou pergunte ao FinBot a cotação de uma ação **fora** da lista de demonstração, como `BBAS3`. Com o token, ela deve aparecer.
+5. Salve (**Ctrl+S**). Por enquanto é só isso: o token ainda **não é usado** por nenhum código. Quem vai lê-lo é o `http.py` (Passo 2), e o teste fica para o **final do Passo 3**, depois de criar as ferramentas.
+
+> ⏳ **Ainda não teste nada aqui.** Os arquivos `app/utils/http.py` e `app/tools/mercado.py` só serão criados nos Passos 2 e 3. Se rodar `python -m app.tools.mercado` agora, vai dar erro de módulo não encontrado.
 
 > 🔒 **O token é uma credencial, como a chave da Groq:** fica só no `.env` (que não vai para o GitHub) e, no Passo 8, no **Environment** do Render. Nunca o coloque no código nem em prints.
 >
@@ -490,6 +499,14 @@ O terminal mostra quatro dicionários, um por ferramenta, nesta ordem:
 Todos trazem o campo **`fonte`** (Banco Central ou brapi): é ele que o FinBot vai citar nas respostas. Os **valores** mudam a cada dia; o que importa é a **estrutura** vir preenchida.
 
 > Apareceu `{'erro': 'dado indisponível no momento (...)'}` em algum? A ferramenta não quebrou: o `@_seguro` transformou a falha em um aviso. As causas mais comuns são o Banco Central demorando (`Read timed out`: rode de novo) ou, na brapi, um ativo que exige token (veja "O que funciona sem token na brapi", na Parte 1).
+
+> 🔑 **Criou o token da brapi no Passo 1?** Agora dá para conferir se ele funciona. Peça a cotação de uma ação **fora** da lista de demonstração, como `BBAS3`:
+>
+> ```bash
+> python -c "from app.tools.mercado import cotacao_acao; print(cotacao_acao.invoke({'ticker': 'BBAS3'}))"
+> ```
+>
+> Com o token, vêm `preco` e `nome` preenchidos. Sem ele, aparece um aviso de ativo indisponível (`MISSING_TOKEN`).
 
 ### Passo 4 — O motor do agente (`app/agents/base.py`)
 
